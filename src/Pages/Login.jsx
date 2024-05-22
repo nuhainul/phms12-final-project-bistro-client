@@ -1,7 +1,17 @@
 // import React from 'react';
-import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+// import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 
 const Login = () => {
+
+    const captchaRef = useRef(null);
+    const [disabled, setDisabled] = useState(true);
+
+    useEffect(() => {
+        loadCaptchaEnginge(6);  
+    }, [])
 
     const handleLogin = (event) => {
         event.preventDefault();
@@ -9,21 +19,31 @@ const Login = () => {
         const email = form.email.value;
         const password = form.password.value;
         // console.log(email, password);
-    //     signIn(email, password)
-    //         .then(result => {
-    //             const user = result.user;
-    //             console.log(user);
-    //             Swal.fire({
-    //                 title: 'User Login Successful.',
-    //                 showClass: {
-    //                     popup: 'animate__animated animate__fadeInDown'
-    //                 },
-    //                 hideClass: {
-    //                     popup: 'animate__animated animate__fadeOutUp'
-    //                 }
-    //             });
-    //             navigate(from, { replace: true });
-    //         })
+        //     signIn(email, password)
+        //         .then(result => {
+        //             const user = result.user;
+        //             console.log(user);
+        //             Swal.fire({
+        //                 title: 'User Login Successful.',
+        //                 showClass: {
+        //                     popup: 'animate__animated animate__fadeInDown'
+        //                 },
+        //                 hideClass: {
+        //                     popup: 'animate__animated animate__fadeOutUp'
+        //                 }
+        //             });
+        //             navigate(from, { replace: true });
+        //         })
+    }
+
+    const handleValidateCaptcha = (e) => {
+        const user_captcha_value = e.target.value;
+        if (validateCaptcha(user_captcha_value)) {
+            setDisabled(false)
+        }
+        else {
+            setDisabled(true)
+        }
     }
 
     return (
@@ -59,7 +79,9 @@ const Login = () => {
                                 <label className="label">
                                     <LoadCanvasTemplate />
                                 </label>
-                                <input onBlur={handleValidateCaptcha} type="text" name="captcha" placeholder="type the captcha above" className="input input-bordered" />
+                                
+                                <input type="text" ref={captchaRef} name="captcha" placeholder="type the captcha above" className="input input-bordered" />
+                                <button onClick={handleValidateCaptcha} className='btn btn-outline btn-xs mt-2'>Validate</button>
 
                             </div>
                             <div className="form-control mt-6">

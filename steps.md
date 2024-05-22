@@ -506,4 +506,57 @@ import { Pagination } from 'swiper/modules';
 
 119. imported `import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';` to `Login.jsx` from the above site. 
 
-120. 
+120. added the following below *Forgot password?*: 
+```
+<label className="label">
+  <LoadCanvasTemplate />
+</label>
+```
+
+121. added the following before `handleLogin` function declaration: 
+```
+useEffect(() => {
+  loadCaptchaEnginge(6);
+}, [])
+```
+
+122. declared the following after `handleLogin` in `Login.jsx`: 
+```
+const handleValidateCaptcha = (e) => {
+        const user_captcha_value = e.target.value;
+        if (validateCaptcha(user_captcha_value)) {
+        //
+        }
+        else {
+        //
+        }
+    }
+```
+and added the following  after ``<LoadCanvasTemplate />``: 
+```
+ <button onClick={handleValidateCaptcha} className="btn btn-outline btn-xs mt-2">Validate</button>
+```
+
+123. added `const captchaRef = useRef(null);` before the `useEffect` in `Login.jsx` and added the following 
+```
+<input type="text" ref={captchaRef} name="captcha" placeholder="type the captcha above" className="input input-bordered" />
+```
+after ``<button onClick={handleValidateCaptcha} className="btn btn-outline btn-xs mt-2">Validate</button>``.  
+
+124. added ``const [disabled, setDisabled] = useState(true);`` below ``const captchaRef = useRef(null);``; and added ``disabled={disabled}`` to the `Login` input button. 
+
+125. updated ``handleValidateCaptcha`` function as follows: 
+```
+const handleValidateCaptcha = (e) => {
+        const user_captcha_value = e.target.value;
+        if (validateCaptcha(user_captcha_value)) {
+            setDisabled(false);
+        }
+        else {
+            setDisabled(true)
+        }
+}
+```
+**problem:** In this state, captcha validation should work. But it is not working as shown on *module 66-2*.
+
+126. 
