@@ -1,6 +1,13 @@
 ## Project Repo:
 
-- https://github.com/nuhainul/phms12-final-project-bistro
+- [new > client] https://github.com/nuhainul/phms12-final-project-bistro-client 
+- [new > server ] https://github.com/nuhainul/phms12-final-project-bistro-server 
+
+- [env > client] https://github.com/nuhainul/env-of-project-private/blob/main/.env.local.phms12-final-project-bistro-client 
+- [env > server]https://github.com/nuhainul/env-of-project-private/blob/main/.env.phms12-final-project-bistro-server 
+
+- [old & obsolete] https://github.com/nuhainul/phms12-final-project-bistro 
+
 
 # Steps:
 
@@ -470,4 +477,33 @@ import { Pagination } from 'swiper/modules';
 
 <!-- start of 66 -->
 
-114. 
+114. created `src/Pages/Login.jsx`, updated `/login` path in `Routes.jsx`, and updated `Link` to `login` in `Navbar.jsx`. 
+
+115. To make `NavBar` & `Footer` disappear on `Login` page, went to `Main.jsx` and updated the following: 
+- after line-7, added: 
+  ```
+  const location = useLocation();
+  console.log(location);
+  const noHeaderFooter = location.pathname.includes('login');
+  ```
+- replaced ``<NavBar></NavBar>`` with ``{noHeaderFooter || <NavBar></NavBar>}``. 
+- replaced ``<Footer></Footer>`` with ``{noHeaderFooter || <Footer></Footer>}``. 
+
+116. went to *daisyUI* to copy a **Hero** component for Login, comverted a `div` to `form` and coded as per needs. 
+
+117. ceated `handlelogin` function on `Login.jsx`: 
+```
+  const handleLogin = (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        // console.log(email, password);
+    }
+```
+    
+118. went to `react simple captcha` (url)[https://www.npmjs.com/package/react-simple-captcha] and installed it using ``npm i react-simple-captcha``; then ran `npm run dev` again.  
+
+119. imported `import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';` to `Login.jsx` from the above site. 
+
+120. 
