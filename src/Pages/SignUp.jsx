@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import Swal from 'sweetalert2'
 import { AuthContext } from "../Providers/AuthProvider";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
 

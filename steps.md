@@ -674,24 +674,101 @@ and added dynamic `Link`s as follows:
   }
 ```
 
-146. installed _Sweet Alert_ using `npm install sweetalert2`. 
+146. installed _Sweet Alert_ using `npm i sweetalert2` and imported it using ``import Swal from 'sweetalert2';``.
 
 147. went to `Login.jsx` : 
- - commented ``// const captchaRef = useRef(null);`` and removed `useRef` from `import` 
- - **captcha is working** after the following changes: 
+  - commented ``// const captchaRef = useRef(null);`` and removed `useRef` from `import` 
+  - **captcha is working** after the following changes: 
  ```
- <label className="label">
-                                    <LoadCanvasTemplate />
-                                </label>
+  <label className="label">
+    <LoadCanvasTemplate />
+  </label>
                                 
-                                {/* <input type="text" ref={captchaRef} name="captcha" placeholder="type the captcha above" className="input input-bordered" /> */}
-                                <input onBlur={handleValidateCaptcha} type="text" name="captcha" placeholder="type the captcha above" className="input input-bordered" />
-                                {/* <button onClick={handleValidateCaptcha} className='btn btn-outline btn-xs mt-2'>Validate</button> */}
-                                <button className='btn btn-outline btn-xs mt-2'>Validate</button>
+  {/* <input type="text" ref={captchaRef} name="captcha" placeholder="type the captcha above" className="input input-bordered" /> */}
+  
+  <input onBlur={handleValidateCaptcha} type="text" name="captcha" placeholder="type the captcha above" className="input input-bordered" />
+  
+  {/* <button onClick={handleValidateCaptcha} className='btn btn-outline btn-xs mt-2'>Validate</button> */}
+  
+  <button className='btn btn-outline btn-xs mt-2'>Validate</button>
  ``` 
- 
 
-148. - added *Swal* (sweet alert)
+148. added *Swal* (sweet alert) so that a Swal shows when captcha is validated. 
 
+149. to implement *Private Route*, created `src/Routes/PrivateRoute.jsx` as follows: 
+```
+// import React from 'react';
 
+import { useContext } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../Providers/AuthProvider";
 
+const PrivateRoute = ({ children }) => {
+    const { user, loading } = useContext(AuthContext);
+    const location = useLocation();
+
+    if (loading) {
+        return <progress className="progress w-56"></progress>
+    }
+
+    if (user) {
+        return children;
+    }
+    return <Navigate to="/login" state={{ from: location }} replace></Navigate>
+};
+
+export default PrivateRoute;
+```
+
+150. created `src/Shared/Secret.jsx` and added the route on `Routes.jsx`: 
+```
+  {
+    path: 'secret',
+    element: <PrivateRoute><Secret></Secret></PrivateRoute>
+  },
+```
+
+151. went to `Login.jsx` and added the following before ``useEffect(()=>{``: 
+```
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
+``` 
+and added the ``navigate(from, { replace: true });`` after *Swal* like: 
+```
+Swal.fire({
+      title: 'User Login Successful.',
+      showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+      }
+});
+navigate(from, { replace: true });
+```
+
+152. went to `SignUp.jsx` to code things related to Photo URL and stuffs. 
+
+153. went to `AuthProvider.jsx` and added the following before `useEffect`: 
+```
+const updateUserProfile = (name, photo) => {
+    return updateProfile(auth.currentUser, {
+        displayName: name, photoURL: photo
+    });
+}
+```
+
+154. went to `SignUp.jsx` and 
+  - updated the followings: 
+  ```
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
+  const { createUser, updateUserProfile } = useContext(AuthContext);
+  ```
+  - completed `onSubmit` function 
+  - with *Swal* integration; 
+  - and added ``const navigate = useNavigate();`` before this function. 
+
+155. 
