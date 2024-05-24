@@ -9,17 +9,28 @@ import {
   // createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import AuthProvider from './Providers/AuthProvider';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+
     {/* <RouterProvider router={router} /> */}
     {/* <div className="max-w-screen-xl mx-auto">
       <RouterProvider router={router} />
     </div> */}
-    <HelmetProvider>
+
+    {/* <HelmetProvider>
       <div className="max-w-screen-xl mx-auto">
         <RouterProvider router={router} />
       </div>
-    </HelmetProvider>
+    </HelmetProvider> */}
+
+    <AuthProvider>
+      <HelmetProvider>
+        <div className='max-w-screen-xl mx-auto'>
+          <RouterProvider router={router} />
+        </div>
+      </HelmetProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )
